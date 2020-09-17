@@ -1,5 +1,5 @@
-//Outside Resources used. https://www.youtube.com/watch?v=u5HAYVHsasc
-//https://www.geeks3d.com/hacklab/20190225/demo-checkerboard-in-glsl/
+//Outside Resources used. https://www.youtube.com/watch?v=u5HAYVHsasc, used in staticGradient, changingCircle, and CustomEffect,
+//https://www.geeks3d.com/hacklab/20190225/demo-checkerboard-in-glsl/ used in staticCheckers.
 
 vec4 staticGradient(in vec2 fragCoord, vec2 resolute, in vec4 fragColor)
 {
@@ -60,9 +60,33 @@ vec4 changingCircle(vec2 fragCoord, vec2 resolute, float time)
     return vec4(c, r, g, 1.0);
 }
 
-vec4 customEffect(in vec2 fragCoord, in vec2 resolution)
+vec4 customEffect(in vec2 fragCoord, in vec2 resolute, float time)
 {
-    return vec4(1.0, 0.5, 0.0, 1.0);
+   //Set Reslolution 
+   vec2 uv = fragCoord.xy / resolute.xy;
+    
+    //Is the ball too big?
+    
+    //Center Object, now it moves to the right.
+    uv -= .01*time;
+    
+    //Square Resolution.
+    uv.x *= resolute.x/resolute.y;
+    
+    //Set Length and Width, and the current size. The size increases as iTime does.
+    float d = length(uv);
+    float r = d;
+    float g = d;
+    float c = d;
+    float currentSize = 0.01*time;
+    
+    //Set color, color morphs according to iTime.
+    if(d < currentSize) c = 0. + (0.1 * time); else c = 1. - (0.01 * time);
+    if(d < currentSize) g = 1. - (0.01 * time); else g = 0. + (0.01 * time);
+        if(d < currentSize) r = 0. + (0.01 * time); else r = 1. - (0.01 * time);
+    
+    //Return Value
+    return vec4(c, r, g, 1.0);
 }
 
 
@@ -75,5 +99,4 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
        //fragColor = staticGradient(fragCoord, resolute, fragColor);
        //fragColor = staticCheckers(fragCoord,  resolute, 20.);
        //fragColor = changingCircle(fragCoord, resolute, time);
-       fragColor = customEffect(fragCoord, resolute, time);
-}
+       //fragColor = customEffect(fragCoord, resolute, time);
