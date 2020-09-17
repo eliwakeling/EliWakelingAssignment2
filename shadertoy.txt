@@ -85,8 +85,8 @@ vec4 customEffect(in vec2 fragCoord, in vec2 resolute, float time)
     if(d < currentSize) g = 1. - (0.01 * time); else g = 0. + (0.01 * time);
         if(d < currentSize) r = 0. + (0.01 * time); else r = 1. - (0.01 * time);
     
-    //Return Value
-    return vec4(c, r, g, 1.0);
+    //Return Value, multiplying the efect by the time creates an interesting segmented effect.
+    return vec4(uv.x*time, r , uv.y*time, 1.0);
 }
 
 
