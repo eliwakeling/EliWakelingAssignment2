@@ -46,14 +46,18 @@ vec4 changingCircle(vec2 fragCoord, vec2 resolute, float time)
     
     //Set Length and Width, and the current size. The size increases as iTime does.
     float d = length(uv);
+    float r = d;
+    float g = d;
     float c = d;
     float currentSize = 0.01*time;
     
-    //Set color.
-    if(d < currentSize) c = 0. + (0.01 * time); else c = 1. - (0.01 * time);
+    //Set color, color morphs according to iTime.
+    if(d < currentSize) c = 0. + (0.1 * time); else c = 1. - (0.01 * time);
+    if(d < currentSize) g = 1. - (0.01 * time); else g = 0. + (0.01 * time);
+        if(d < currentSize) r = 0. + (0.01 * time); else r = 1. - (0.01 * time);
     
     //Return Value
-    return vec4(c, c, c, 1.0);
+    return vec4(c, r, g, 1.0);
 }
 
 vec4 customEffect(in vec2 fragCoord, in vec2 resolution)
@@ -67,7 +71,9 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 resolute = iResolution.xy;
     float time = iTime;
     
+    //UNCOMMENT THE EFFECT YOU WANT TO USE!
        //fragColor = staticGradient(fragCoord, resolute, fragColor);
        //fragColor = staticCheckers(fragCoord,  resolute, 20.);
-       fragColor = changingCircle(fragCoord, resolute, time);
+       //fragColor = changingCircle(fragCoord, resolute, time);
+       fragColor = customEffect(fragCoord, resolute, time);
 }
