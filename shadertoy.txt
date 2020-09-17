@@ -1,0 +1,73 @@
+//Outside Resources used. https://www.youtube.com/watch?v=u5HAYVHsasc
+//https://www.geeks3d.com/hacklab/20190225/demo-checkerboard-in-glsl/
+
+vec4 staticGradient(in vec2 fragCoord, vec2 resolute, in vec4 fragColor)
+{
+    //Set Resolution.
+    vec2 uv = fragCoord/resolute.xy;
+    
+    //Set Color.
+        return vec4(uv.x, uv.y, 0, 1.0);
+}
+
+vec4 staticCheckers(in vec2 fragCoord, vec2 resolute, float repeats)
+{
+
+    
+    //Set Resolution.
+    vec2 uv = fragCoord/resolute.xy;
+    //Set On/Off Color.
+    vec3 onOff = vec3(0.0);
+    //Square Resolution.
+    uv.x *= resolute.x/resolute.y;
+    
+    //Sets Checker Pattern.    
+	float cx = floor(repeats * uv.x);
+    float cy = floor(repeats * uv.y);
+    float result = mod(cx + cy, 2.0);
+    
+    //Returns Value.
+    return vec4(vec3(result), 1.0);
+    
+    
+    
+
+}
+
+vec4 changingCircle(vec2 fragCoord, vec2 resolute, float time)
+{
+   //Set Reslolution 
+   vec2 uv = fragCoord.xy / resolute.xy;
+    
+    //Center Object.
+    uv -= .5;
+    //Square Resolution.
+    uv.x *= resolute.x/resolute.y;
+    
+    //Set Length and Width, and the current size. The size increases as iTime does.
+    float d = length(uv);
+    float c = d;
+    float currentSize = 0.01*time;
+    
+    //Set color.
+    if(d < currentSize) c = 0. + (0.01 * time); else c = 1. - (0.01 * time);
+    
+    //Return Value
+    return vec4(c, c, c, 1.0);
+}
+
+vec4 customEffect(in vec2 fragCoord, in vec2 resolution)
+{
+    return vec4(1.0, 0.5, 0.0, 1.0);
+}
+
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 resolute = iResolution.xy;
+    float time = iTime;
+    
+       //fragColor = staticGradient(fragCoord, resolute, fragColor);
+       //fragColor = staticCheckers(fragCoord,  resolute, 20.);
+       fragColor = changingCircle(fragCoord, resolute, time);
+}
